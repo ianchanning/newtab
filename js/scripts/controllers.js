@@ -2,6 +2,11 @@ define(['angularAMD'], function (angularAMD) {
 	var controllers = angular.module('controllers', []);
 	controllers.controller('DashboardCtrl', function ($scope, $interval, $http) {
 
+        // weather
+        var city = 'Antwerp', 
+        	lang = 'en',
+        	tempUnit = '°C';
+
 		// localStorage with image
     	var storageFiles = JSON.parse(localStorage.getItem("storageFiles")) || {},
 			background = document.getElementById("background"),
@@ -73,9 +78,9 @@ define(['angularAMD'], function (angularAMD) {
 	    if (typeof storageFilesHour === "undefined" || storageFilesHour < currentHour) {
             storageFiles.hour = currentHour;
             
-			$http.get('http://api.openweathermap.org/data/2.5/weather?q=Helsinki&lang=fi')
+			$http.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&lang=' + lang)
 				.success(function(data, status, headers, config) {
-					var temp = Math.round(parseInt(data.main.temp) - 273.15, 2) + "°C";
+					var temp = Math.round(parseInt(data.main.temp) - 273.15, 2) + tempUnit;
 					storageFiles.temp = temp;
 					$scope.temp = temp;
 
@@ -117,5 +122,8 @@ define(['angularAMD'], function (angularAMD) {
 			$scope.text = "Good " + $scope.getStateOfDay(hours) + ", today is " + moment().format('dddd DD.MM.YYYY') + ".";
 			$scope.clock = moment().format('HH:mm');
 		}, 1000);
+
+		$scope.city = city;
+		$scope.lang = lang;
 	});
 });

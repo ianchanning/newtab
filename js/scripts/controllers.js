@@ -1,11 +1,6 @@
 define(['angularAMD'], function (angularAMD) {
 	var controllers = angular.module('controllers', []);
-	controllers.controller('DashboardCtrl', function ($scope, $interval, $http) {
-
-        // weather
-        var city = 'Antwerp', 
-        	lang = 'en',
-        	tempUnit = '°C';
+	controllers.controller('DashboardCtrl', function (LANG, CITY, TEMP_UNITS, DATE_FORMAT, $scope, $interval, $http) {
 
 		// localStorage with image
     	var storageFiles = JSON.parse(localStorage.getItem("storageFiles")) || {},
@@ -78,9 +73,9 @@ define(['angularAMD'], function (angularAMD) {
 	    if (typeof storageFilesHour === "undefined" || storageFilesHour < currentHour) {
             storageFiles.hour = currentHour;
             
-			$http.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&lang=' + lang)
+			$http.get('http://api.openweathermap.org/data/2.5/weather?q=' + CITY + '&lang=' + LANG)
 				.success(function(data, status, headers, config) {
-					var temp = Math.round(parseInt(data.main.temp) - 273.15, 2) + tempUnit;
+					var temp = Math.round(parseInt(data.main.temp) - 273.15, 2) + TEMP_UNITS;
 					storageFiles.temp = temp;
 					$scope.temp = temp;
 
@@ -115,15 +110,14 @@ define(['angularAMD'], function (angularAMD) {
 			}
 		}
 
-		$scope.text = "Good " + $scope.getStateOfDay(moment().get('hour')) + ", today is " + moment().format('dddd DD.MM.YYYY') + ".";
+		$scope.text = "Good " + $scope.getStateOfDay(moment().get('hour')) + ", today is " + moment().format(DATE_FORMAT) + ".";
 		$scope.clock = moment().format('HH:mm');
 		$interval(function () { 
 			var hours = moment().get('hour');
-			$scope.text = "Good " + $scope.getStateOfDay(hours) + ", today is " + moment().format('dddd DD.MM.YYYY') + ".";
+			$scope.text = "Good " + $scope.getStateOfDay(hours) + ", today is " + moment().format(DATE_FORMAT) + ".";
 			$scope.clock = moment().format('HH:mm');
 		}, 1000);
 
-		$scope.city = city;
-		$scope.lang = lang;
+		$scope.city = CITY;
 	});
 });

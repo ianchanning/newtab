@@ -1,6 +1,10 @@
 define(['angularAMD', 'angular-route', 'moment', 'controllers'], function (angularAMD) {
 	moment.locale('en');
     var app = angular.module("newtab", ['ngRoute', 'controllers']);
+    app.constant('LANG', 'en')
+        .constant('CITY','Antwerp')
+        .constant('TEMP_UNITS', '°C')
+        .constant('DATE_FORMAT', 'dddd DD.MM.YYYY');
     app.config(['$routeProvider', function($routeProvider) {
     	$routeProvider.
     	when('/', {

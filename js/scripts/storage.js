@@ -24,7 +24,12 @@ define(['angularAMD'], function (angularAMD) {
 	    	var promise = $http.get('user.json');
  
 			promise.then(function(data) {
+				// success
 				$window.localStorage.setItem(userPath, JSON.stringify(data.data));
+			}, function(data) {
+				// error
+				var userData = {"locale" : "en", "name" : "Old Bean", "location" : "Helsinki", "temperatureType" : 0 };
+				$window.localStorage.setItem(userPath, JSON.stringify(userData));
 			});
 
 			return promise;

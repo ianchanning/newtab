@@ -1,6 +1,7 @@
 {
-	"locale" : "en",
+	"locale" : "zh-tw",
 	"name" : "Your Name",
 	"location" : "Helsinki",
-	"temperatureType" : 0
+	"temperatureType" : 0,
+	"dateformat" : "dddd DD.MM.YYYY"
 }
